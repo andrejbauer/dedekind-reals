@@ -334,3 +334,30 @@ Proof.
   intros. intros q [s [t H0]]. exists s, t.
   repeat split. apply H0. apply H. apply H0. apply H0.
 Qed.
+
+Lemma R_of_Q_plus : forall (q r : Q),
+    R_of_Q (q + r) == R_of_Q q + R_of_Q r.
+Proof.
+  split.
+  - intros a H. simpl. simpl in H.
+    (* Improve q and r separately *)
+    pose (((a-r)+q)*(1#2)) as q0.
+    assert (a < q0 + r)%Q.
+    { unfold q0. apply (Qplus_lt_l _ _ (-r)).
+      rewrite <- Qplus_assoc, Qplus_opp_r, Qplus_0_r.
+      apply middle_between. apply (Qplus_lt_r _ _ r).
+      ring_simplify. rewrite Qplus_comm. exact H. }
+    exists q0, (((a-q0)+r)*(1#2)). split.
+    apply (Qplus_lt_l _ _ (-q0)).
+    rewrite (Qplus_comm q0), <- Qplus_assoc, Qplus_opp_r, Qplus_0_r.
+    apply middle_between. apply (Qplus_lt_r _ _ q0).
+    ring_simplify. exact H0.
+    split. apply middle_between.
+    apply (Qplus_lt_r _ _ r). ring_simplify. rewrite Qplus_comm. exact H.
+    apply middle_between. apply (Qplus_lt_r _ _ q0).
+    ring_simplify. exact H0.
+  - intros a H. destruct H as [s [t H]]. simpl.
+    simpl in H. apply (Qlt_trans _ (s+t)). apply H.
+    apply (Qplus_lt_le_compat). apply H.
+    apply Qlt_le_weak. apply H.
+Qed.

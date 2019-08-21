@@ -142,16 +142,6 @@ Proof.
   - exists a, b, c, d ; setoid_rewrite -> Eqr ; assumption.
 Qed.
 
-Lemma middle_between : forall q r : Q,
-    Qlt q r -> (Qlt q ((q+r)*(1#2)) /\ Qlt ((q+r)*(1#2)) r).
-Proof.
-  split.
-  - rewrite <- (Qmult_lt_r _ _ (2#1)). apply (Qplus_lt_r _ _ (-q)).
-    ring_simplify. apply H. reflexivity.
-  - rewrite <- (Qmult_lt_r _ _ (2#1)). apply (Qplus_lt_r _ _ (-r)).
-    ring_simplify. apply H. reflexivity.
-Qed.
-
 Lemma mult_lower_open : forall (x y : R) (q : Q),
     mult_lower x y q -> exists r:Q, Qlt q r /\ mult_lower x y r.
 Proof.

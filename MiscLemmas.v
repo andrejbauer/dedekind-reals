@@ -304,3 +304,14 @@ Proof.
     + assumption.
     + apply (Qle_trans _ q) ; assumption.
 Qed.
+
+Lemma middle_between : forall q r : Q,
+    Qlt q r -> (Qlt q ((q+r)*(1#2)) /\ Qlt ((q+r)*(1#2)) r).
+Proof.
+  split.
+  - rewrite <- (Qmult_lt_r _ _ (2#1)). apply (Qplus_lt_r _ _ (-q)).
+    ring_simplify. apply H. reflexivity.
+  - rewrite <- (Qmult_lt_r _ _ (2#1)). apply (Qplus_lt_r _ _ (-r)).
+    ring_simplify. apply H. reflexivity.
+Qed.
+

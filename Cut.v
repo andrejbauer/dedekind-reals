@@ -247,6 +247,16 @@ Qed.
     rational numbers to real numbers. *)
 Coercion R_of_Q : Q >-> R.
 
+Lemma R_lt_Q_iff : forall (x:R) (q:Q),
+    upper x q <-> x < q.
+Proof.
+  split.
+  - intros. destruct (upper_open x q H). exists x0. split.
+    apply H0. apply H0.
+  - intros. destruct H. apply (upper_upper x x0).
+    apply H. apply H.
+Qed.
+
 Lemma R_is_Q_iff : forall (x:R) (q:Q),
     x == q <-> (forall r:Q, (Qlt q r -> upper x r) /\ (Qlt r q -> lower x r)).
 Proof.
